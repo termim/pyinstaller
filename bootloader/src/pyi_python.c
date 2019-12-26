@@ -58,6 +58,11 @@ DECLPROC(PyErr_Clear);
 DECLPROC(PyErr_Occurred);
 DECLPROC(PyErr_Print);
 
+DECLPROC(PyErr_Fetch);
+DECLPROC(PyObject_Str);
+DECLPROC(PyUnicode_AsUTF8);
+DECLPROC(PyObject_GetAttrString);
+
 DECLPROC(PyImport_AddModule);
 DECLPROC(PyImport_ExecCodeModule);
 DECLPROC(PyImport_ImportModule);
@@ -66,6 +71,7 @@ DECLPROC(PyList_New);
 DECLPROC(PyLong_AsLong);
 DECLPROC(PyModule_GetDict);
 DECLPROC(PyObject_CallFunction);
+DECLPROC(PyObject_CallFunctionObjArgs);
 DECLPROC(PyObject_SetAttrString);
 DECLPROC(PyRun_SimpleString);
 DECLPROC(PySys_AddWarnOption);
@@ -124,7 +130,10 @@ pyi_python_map_names(HMODULE dll, int pyvers)
     GETPROC(dll, PyLong_AsLong);
     GETPROC(dll, PyModule_GetDict);
     GETPROC(dll, PyObject_CallFunction);
+    GETPROC(dll, PyObject_CallFunctionObjArgs);
     GETPROC(dll, PyObject_SetAttrString);
+    GETPROC(dll, PyObject_GetAttrString);
+
     GETPROC(dll, PyRun_SimpleString);
 
     GETPROC(dll, PySys_AddWarnOption);
@@ -142,6 +151,11 @@ pyi_python_map_names(HMODULE dll, int pyvers)
     GETPROC(dll, PyUnicode_FromFormat);
     GETPROC(dll, PyUnicode_Decode);
     GETPROC(dll, PyUnicode_DecodeFSDefault);
+
+    if (pyvers >= 33) {
+        /* new in Python 3.3 */
+        GETPROC(dll, PyUnicode_AsUTF8);
+    }
 
     VS("LOADER: Loaded functions from Python library.\n");
 
